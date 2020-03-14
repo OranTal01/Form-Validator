@@ -4,18 +4,9 @@ const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 const password2 = document.querySelector('#password2');
 
-formSubmit.addEventListener('submit', (e) => {
-    e.preventDefault();
-    checkRequired([username, email, password, password2]);
-    checkLength(username, 3, 15);
-    checkLength(password, 6, 25);
-    checkEmail(email);
-    checkPasswordsMatch(password, password2);
-});
-
 const checkRequired = (inputs) => {
     for (const input of inputs) {
-        if (input.value === '') {
+        if (input.value.trim() === '') {
             showError(input, `${getFiledName(input)} is required`);
         } else {
             showSuccess(input);
@@ -32,12 +23,12 @@ const checkLength = (input, min, max) => {
     }
 };
 
-const checkEmail = (input) => {
+const checkEmail = email => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(input.value.trim())) {
-        showSuccess(input);
+    if (re.test(email.value.trim())) {
+        showSuccess(email);
     } else {
-        showError(input, 'Email is not valid');
+        showError(email, 'Email is not valid');
     }
 };
 
@@ -64,3 +55,12 @@ const showSuccess = input => {
     const formControl = input.parentElement;
     formControl.setAttribute('class', 'form-control success');
 };
+
+formSubmit.addEventListener('submit', (e) => {
+    e.preventDefault();
+    checkRequired([username, email, password, password2]);
+    checkLength(username, 3, 15);
+    checkLength(password, 6, 25);
+    checkEmail(email);
+    checkPasswordsMatch(password, password2);
+});
